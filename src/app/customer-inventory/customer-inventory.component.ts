@@ -7,13 +7,14 @@ import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 import { getData } from './data';
 import { PartialMatchFilter } from './partial-match-filter.component';
 import { RadioFilter } from './radio-filter.component';
+import { Checkbox } from './checkbox.component';
 
 
 
 @Component({
   selector: 'app-customer-inventory',
   standalone: true,
-  imports: [AgGridAngular, FormsModule, PartialMatchFilter,RadioFilter],
+  imports: [AgGridAngular, FormsModule, PartialMatchFilter,RadioFilter,Checkbox],
   templateUrl: './customer-inventory.component.html',
   styleUrl: './customer-inventory.component.less'
 })
@@ -23,7 +24,10 @@ export class CustomerInventoryComponent {
 
   public columnDefs: ColDef[] = [
     { field: 'year',
-    filter: RadioFilter },
+    filter: Checkbox,
+      checkboxSelection: true,
+    
+  },
     {
       field: 'name',
       filter: PartialMatchFilter,
@@ -42,7 +46,7 @@ frameworkComponents: any;
 
   onClicked() {
     this.gridApi
-      .getColumnFilterInstance<PartialMatchFilter>('name')
+      .getColumnFilterInstance<PartialMatchFilter>('year')
       .then((instance) => {
         instance!.componentMethod('Hello World!');
       });
