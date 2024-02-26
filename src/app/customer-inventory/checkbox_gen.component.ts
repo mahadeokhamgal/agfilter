@@ -4,55 +4,56 @@ import { IFilterAngularComp } from 'ag-grid-angular';
 import { IDoesFilterPassParams, IFilterParams } from 'ag-grid-community';
 
 @Component({
- selector:'./checkbox.component',
+ selector:'./heckbox_gen.component',
   standalone: true,
   imports: [FormsModule],
-  templateUrl:'./checkbox.Component.html',
+  templateUrl:'./checkbox_gen.Component.html',
 })  
-export class Checkbox implements IFilterAngularComp {
-   years:any[]=[];
-   
-    selectedYears:{[key:string]:boolean}={};
-    columnKey:string='';
+export class Checkbox_gen<T extends{[key: string]:any}> implements IFilterAngularComp {
+   values:T[]=[];
+    selectedValues:{[key:string]:boolean}={};
+    columnKey : keyof T = '';
     column:any;
   params!: IFilterParams;
     // isFilterActiveBool: any;
     // year = 'All';
   agInit(params: IFilterParams): void {
     this.params = params;
-    this.columnKey=params.colDef.field!;
-    this.years.forEach(year=>{
-        this.selectedYears[year] = true;
-    });
+    this.columnKey=params.colDef.field as keyof T;
+    this.values=this.getCheckboxesForApi();
+    // this.values.forEach(value=>{
+    //     this.selectedValues[cellValue] = true;
+    // });
   }
-  getAllRows() {
-    let rowData: any[] = [];
+
+  getAllRows(): T[] {
+    let rowData: T[] = [];
     this.params.api.forEachNode(node => rowData.push(node.data));
     return rowData;
   }
-  getCheckboxesForApi(){
-    this.years=[];
-     this.params.api.forEachNode(node => this.years.push(node.data.year));
-     return this.years;
+  getCheckboxesForApi(): T[] {
+    this.values=[];
+     this.params.api.forEachNode(node => this.values.push(node.data[this.columnKey]));
+     return this.values;
   }
   isFilterActive(): boolean {
-    return Object.values(this.selectedYears).some(value =>value);
+    return Object.values(this.selectedValues).some(value =>value);
   }
 
   doesFilterPass(params: IDoesFilterPassParams): boolean {
     const cellValue = params.data[this.columnKey]
-    return this.selectedYears[cellValue];
+    return this.selectedValues[cellValue];
   }
 
   getModel():any {
-    return this.selectedYears;
+    return this.selectedValues;
   }
 
   setModel(model: any):void {
-    this.selectedYears=model;
+    this.selectedValues=model;
   }
 
-  updateFilter() {
+  updateFilter():void {
     this.params.filterChangedCallback();
     this.params.filterModifiedCallback();
     console.log('calling change');

@@ -8,13 +8,14 @@ import { getData } from './data';
 import { PartialMatchFilter } from './partial-match-filter.component';
 import { RadioFilter } from './radio-filter.component';
 import { Checkbox } from './checkbox.component';
+import { Checkbox_gen } from './checkbox_gen.component';
 
 
 
 @Component({
   selector: 'app-customer-inventory',
   standalone: true,
-  imports: [AgGridAngular, FormsModule, PartialMatchFilter,RadioFilter,Checkbox],
+  imports: [AgGridAngular, FormsModule, PartialMatchFilter,RadioFilter,Checkbox,Checkbox_gen],
   templateUrl: './customer-inventory.component.html',
   styleUrl: './customer-inventory.component.less'
 })
@@ -24,13 +25,13 @@ export class CustomerInventoryComponent {
 
   public columnDefs: ColDef[] = [
     { field: 'year',
-    filter: Checkbox,
+    filter: Checkbox_gen,
       checkboxSelection: true,
     
   },
     {
       field: 'name',
-      filter: PartialMatchFilter,
+      filter: Checkbox_gen,
     },
   ];
   public defaultColDef: ColDef = {

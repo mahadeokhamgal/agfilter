@@ -4,7 +4,7 @@
     @for (yearOption of getCheckboxesForApi(); track yearOption){
     <div>
         <label>
-            <input type="checkbox" [value]="yearOption" [(ngModel)]="selectedYears[yearOption]" (ngModelChange)="updateFilter()" />
+            <input type="checkbox" [value]="yearOption" [(ngModel)]="selectedValues[yearOption[columnKey]]" (ngModelChange)="updateFilter()" />
             {{yearOption}}
         </label>
     </div>
